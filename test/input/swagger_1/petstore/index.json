@@ -1,60 +1,1801 @@
 {
-  "apiVersion": "1.0.0",
-  "swaggerVersion": "1.2",
-  "apis": [
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sync Tanfeth API",
+    "version": "1.4.0",
+    "description": "This document defines the RP Get Account Info and RP Get Balances Info services between SAMA and agencies , This services cover the retrieving for all account and balances information from banks on the inquired party.\n",
+    "contact": {
+      "email":"mifahmy@sama.gov.sa",
+         "name":"Mahmoud Fahmy"
+    }
+  },
+  "servers": [
     {
-      "path": "/../pet.{format}",
-      "description": "Operations about pets"
-    },
-    {
-      "path": "/../user.{format}",
-      "description": "Operations about user"
-    },
-    {
-      "path": "/../store.{format}",
-      "description": "Operations about store"
+      "url": "/bea/ws/gi/rpsync"
     }
   ],
-  "authorizations": {
-    "oauth2": {
-      "type": "oauth2",
-      "scopes": [
-        {
-          "scope": "write:pets",
-          "description": "Modify pets in your account"
-        },
-        {
-          "scope": "read:pets",
-          "description": "Read your pets"
-        }
-      ],
-      "grantTypes": {
-        "implicit": {
-          "loginEndpoint": {
-            "url": "http://petstore.swagger.wordnik.com/api/oauth/dialog"
-          },
-          "tokenName": "access_token"
-        },
-        "authorization_code": {
-          "tokenRequestEndpoint": {
-            "url": "http://petstore.swagger.wordnik.com/api/oauth/requestToken",
-            "clientIdName": "client_id",
-            "clientSecretName": "client_secret"
-          },
-          "tokenEndpoint": {
-            "url": "http://petstore.swagger.wordnik.com/api/oauth/token",
-            "tokenName": "auth_code"
+  "paths": {
+    "/getaccountinfo/v01": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "success",
+             "headers": {
+              "PID": {
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/T_PID"
+                }
+              },
+              "Status": {
+                "schema": {
+                  "$ref": "#/components/schemas/T_StatusCode"
+                }
+              },
+              "MsgDtTm": {
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/T_MsgDtTm"
+                }
+              },
+              "SRN": {
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/T_SRN"
+                }
+              },
+              "CRN": {
+                "schema": {
+                  "$ref": "#/components/schemas/T_CRN"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                     "RPGetAcctsInfoSyncRs": {
+                      "$ref": "#/components/schemas/RPGetAcctsInfoSyncRs"
+                    }
+                  }
+                }
+              }
+            }
           }
+        },
+        "summary": "RPGetAcctsInfoSyncRq",
+        "operationId": "RPGetAcctsInfoSyncRq",
+       
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "Header": {
+                      "$ref": "#/components/schemas/T_HeaderRq"
+                    },
+                  "RPGetAcctsInfoSyncRq": {
+                    "$ref": "#/components/schemas/RPGetAcctsInfoSyncRq"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/getbalanceinfo/v01": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "success",
+         "headers": {
+              "PID": {
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/T_PID"
+                }
+              },
+              "Status": {
+                "schema": {
+                  "$ref": "#/components/schemas/T_StatusCode"
+                }
+              },
+              "MsgDtTm": {
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/T_MsgDtTm"
+                }
+              },
+              "SRN": {
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/T_SRN"
+                }
+              },
+              "CRN": {
+                "schema": {
+                  "$ref": "#/components/schemas/T_CRN"
+                }
+              }
+            },
+        
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                     "RPGetBalsInfoSyncRs": {
+                      "$ref": "#/components/schemas/RPGetBalsInfoSyncRs"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "RPGetBalsInfoSyncRq",
+        "summary": "RPGetBalsInfoSyncRq",
+       
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "Header": {
+                      "$ref": "#/components/schemas/T_HeaderRq"
+                    },
+                  "RPGetBalsInfoSyncRq": {
+                    "$ref": "#/components/schemas/RPGetBalsInfoSyncRq"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
         }
       }
     }
   },
-  "info": {
-    "title": "Swagger Sample App",
-    "description": "This is a sample server Petstore server.  You can find out more about Swagger \n    at <a href=\"http://swagger.wordnik.com\">http://swagger.wordnik.com</a> or on irc.freenode.net, #swagger.  For this sample,\n    you can use the api key \"special-key\" to test the authorization filters",
-    "termsOfServiceUrl": "http://helloreverb.com/terms/",
-    "contact": "apiteam@wordnik.com",
-    "license": "Apache 2.0",
-    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html"
+  "components": {
+    "schemas": {
+    "T_HeaderRs":{
+     "type": "object",
+        "properties": { "PID": {
+                
+                  "$ref": "#/components/schemas/T_PID"
+                
+              },
+              "Status": {
+       
+                  "$ref": "#/components/schemas/T_StatusCode"
+       
+              },
+              "MsgDtTm": {
+       
+       
+                  "$ref": "#/components/schemas/T_MsgDtTm"
+                     },
+              "ChID": {
+       
+                  "$ref": "#/components/schemas/T_ChID"
+       
+              },
+              "MsgUID": {
+          
+                  "$ref": "#/components/schemas/T_CRN"
+          
+              }} 
+    },
+     "T_HeaderRq":{
+     "type": "object",
+        "properties": { "PID": {
+                  "$ref": "#/components/schemas/T_PID"
+
+},
+              
+              "MsgDtTm": {
+                  "$ref": "#/components/schemas/T_MsgDtTm"
+
+              },
+              "ChID": {
+            
+                  "$ref": "#/components/schemas/T_ChID"
+                
+              },
+              "MsgUID": {
+                
+                  "$ref": "#/components/schemas/T_CRN"
+                
+              }}
+    },
+     "RPGetAcctsInfoSyncRq": {
+        "type": "object",
+        "properties": {
+          "Rqstr": {
+            "$ref": "#/components/schemas/T_Rqstr"
+          },
+          "InvPrty": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice0"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice1"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice2"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice3"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice4"
+              }
+            ]
+          },
+          "ThrdPrty": {
+            "$ref": "#/components/schemas/T_ThrdPrty"
+          },
+          "AccQry": {
+            "$ref": "#/components/schemas/T_AccQry"
+          },
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          }
+        }
+      },
+      "RPGetBalsInfoSyncRq": {
+        "type": "object",
+        "properties": {
+          "Rqstr": {
+            "$ref": "#/components/schemas/T_Rqstr"
+          },
+          "InvPrty": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice0"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice1"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice2"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice3"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpInvPrtyChoice4"
+              }
+            ]
+          },
+          "ThrdPrty": {
+            "$ref": "#/components/schemas/T_ThrdPrty"
+          },
+          "AccQry": {
+            "$ref": "#/components/schemas/T_AccQry"
+          },
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          }
+        }
+      },
+      "RPGetAcctsInfoSyncRs": {
+        "type": "object",
+        "properties": {
+          "FIRsGetAcctsInfoList": {
+            "$ref": "#/components/schemas/T_FIRsGetAcctsInfoList"
+          }
+        }
+      },
+      "RPGetBalsInfoSyncRs": {
+        "type": "object",
+        "properties": {
+          "FIRsGetBalsInfoList": {
+            "$ref": "#/components/schemas/T_FIRsGetBalsInfoList"
+          }
+        }
+      },
+      "RPGetDepotsInfoCallBackRq": {
+        "type": "object",
+        "properties": {
+          "FIRsGetDepotsInfoList": {
+            "$ref": "#/components/schemas/T_FIRsGetDepotsInfoList"
+          }
+        }
+      },
+      "RPGetLiabsInfoCallBackRq": {
+        "type": "object",
+        "properties": {
+          "FIRsGetLiabsInfoList": {
+            "$ref": "#/components/schemas/T_FIRsGetLiabsInfoList"
+          }
+        }
+      },
+      "RPGetSafsInfoCallBackRq": {
+        "type": "object",
+        "properties": {
+          "FIRsGetSafsInfoList": {
+            "$ref": "#/components/schemas/T_FIRsGetSafsInfoList"
+          }
+        }
+      },
+      "T_FIRsGetAcctsInfoList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/T_FIRsGetAcctsInfo"
+        }
+      },
+      "T_FIRsGetBalsInfoList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/T_FIRsGetBalsInfo"
+        }
+      },
+      "T_FIRsGetDepotsInfoList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/T_FIRsGetDepotsInfo"
+        }
+      },
+      "T_FIRsGetLiabsInfoList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/T_FIRsGetLiabsInfo"
+        }
+      },
+      "T_FIRsGetSafsInfoList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/T_FIRsGetSafsInfo"
+        }
+      },
+      "T_FIRsGetAcctsInfo": {
+        "type": "object",
+        "required": [
+          "FICode",
+          "FIRsStatus"
+        ],
+        "properties": {
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          },
+          "FIRsStatus": {
+            "$ref": "#/components/schemas/T_FIRsStatus"
+          },
+          "AcctsList": {
+            "type": "object",
+            "required": [
+              "AccInfo"
+            ],
+            "properties": {
+              "AccInfo": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/T_AccInfo"
+                }
+              }
+            }
+          },
+          "ShrsList": {
+            "type": "object",
+            "required": [
+              "ShrInfo"
+            ],
+            "properties": {
+              "ShrInfo": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/T_ShrInfo"
+                }
+              }
+            }
+          }
+        }
+      },
+      "T_FIRsGetBalsInfo": {
+        "type": "object",
+        "required": [
+          "FICode",
+          "FIRsStatus"
+        ],
+        "properties": {
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          },
+          "FIRsStatus": {
+            "$ref": "#/components/schemas/T_FIRsStatus"
+          },
+          "AcctsList": {
+            "type": "object",
+            "required": [
+              "AccInfo"
+            ],
+            "properties": {
+              "AccInfo": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/T_AccInfo"
+                }
+              }
+            }
+          },
+          "ShrsList": {
+            "type": "object",
+            "required": [
+              "ShrInfo"
+            ],
+            "properties": {
+              "ShrInfo": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/T_ShrInfo"
+                }
+              }
+            }
+          }
+        }
+      },
+      "T_FIRsGetDepotsInfo": {
+        "type": "object",
+        "required": [
+          "FICode",
+          "FIRsStatus"
+        ],
+        "properties": {
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          },
+          "FIRsStatus": {
+            "$ref": "#/components/schemas/T_FIRsStatus"
+          },
+          "DepotsList": {
+            "type": "object",
+            "required": [
+              "DepotInfo"
+            ],
+            "properties": {
+              "DepotInfo": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/T_DepotInfo"
+                }
+              }
+            }
+          }
+        }
+      },
+      "T_FIRsGetSafsInfo": {
+        "type": "object",
+        "required": [
+          "FICode",
+          "FIRsStatus"
+        ],
+        "properties": {
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          },
+          "FIRsStatus": {
+            "$ref": "#/components/schemas/T_FIRsStatus"
+          },
+          "SafsList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T_SafsList"
+            }
+          }
+        }
+      },
+      "T_FIRsGetLiabsInfo": {
+        "type": "object",
+        "required": [
+          "FICode",
+          "FIRsStatus"
+        ],
+        "properties": {
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          },
+          "FIRsStatus": {
+            "$ref": "#/components/schemas/T_FIRsStatus"
+          },
+          "LiabsList": {
+            "type": "object",
+            "required": [
+              "LiabsList"
+            ],
+            "properties": {
+              "LiabsList": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/T_LiabsList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "T_DepotInfo": {
+        "type": "object",
+        "required": [
+          "DepotNum",
+          "JntAcc",
+          "PrdUsrsList"
+        ],
+        "properties": {
+          "DepotNum": {
+            "maxLength": 30,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9ا-ي ]+",
+            "type": "string"
+          },
+          "DepotType": {
+            "$ref": "#/components/schemas/T_AnyType"
+          },
+          "JntAcc": {
+            "$ref": "#/components/schemas/T_Flag"
+          },
+          "DepotCur": {
+            "$ref": "#/components/schemas/T_AccCur"
+          },
+          "DepotStatus": {
+            "$ref": "#/components/schemas/T_DepotStatus"
+          },
+          "DepotStrtDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "DepotDueDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "DepotBal": {
+            "$ref": "#/components/schemas/T_Balance"
+          },
+          "PrdUsrsList": {
+            "$ref": "#/components/schemas/T_PrdUsrsList"
+          }
+        }
+      },
+      "T_AccInfo": {
+        "type": "object",
+        "required": [
+          "AccNum",
+          "JntAcc",
+          "PrdUsrsList"
+        ],
+        "properties": {
+          "AccNum": {
+            "maxLength": 30,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9ا-ي ]+",
+            "type": "string"
+          },
+          "AccType": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
+          },
+          "JntAcc": {
+            "$ref": "#/components/schemas/T_Flag"
+          },
+          "AccCur": {
+            "$ref": "#/components/schemas/T_AccCur"
+          },
+          "AccStatus": {
+            "$ref": "#/components/schemas/T_AccStatus"
+          },
+          "Inst": {
+            "$ref": "#/components/schemas/T_FullName"
+          },
+          "OpnDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "ClsDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "AvailBal": {
+            "$ref": "#/components/schemas/T_Balance"
+          },
+          "TotBal": {
+            "$ref": "#/components/schemas/T_Balance"
+          },
+          "BalDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "PrdUsrsList": {
+            "$ref": "#/components/schemas/T_PrdUsrsList"
+          },
+          "RsrvList": {
+            "$ref": "#/components/schemas/T_RsrvList"
+          }
+        }
+      },
+      "T_ShrInfo": {
+        "type": "object",
+        "required": [
+          "CmpnyName"
+        ],
+        "properties": {
+          "CmpnyName": {
+            "$ref": "#/components/schemas/T_FullName"
+          }
+        }
+      },
+      "T_SafsList": {
+        "title": "SafsList",
+        "required": [
+          "SafInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "SafInfo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T_SafInfo"
+            }
+          }
+        }
+      },
+      "T_SafInfo": {
+        "type": "object",
+        "required": [
+          "SafNum",
+          "JntAcc",
+          "PrdUsrsList"
+        ],
+        "properties": {
+          "SafNum": {
+            "maxLength": 30,
+            "minLength": 1,
+            "pattern": "[A-Za-z0-9ا-ي ]+",
+            "type": "string"
+          },
+          "JntAcc": {
+            "$ref": "#/components/schemas/T_Flag"
+          },
+          "SafBrnch": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "OpnDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "PrdUsrsList": {
+            "$ref": "#/components/schemas/T_PrdUsrsList"
+          }
+        }
+      },
+      "T_LiabsList": {
+        "title": "LiabsList",
+        "required": [
+          "LiabInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "LiabInfo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T_LiabInfo"
+            }
+          }
+        }
+      },
+      "T_LiabInfo": {
+        "type": "object",
+        "required": [
+          "LiabType",
+          "LiabCur",
+          "LiabInstsNum",
+          "InstRept",
+          "InstReptTms",
+          "InstAmt",
+          "LiabDueDt",
+          "TotLiabAmt",
+          "RmngLiabAmt",
+          "PrdUsrsList"
+        ],
+        "properties": {
+          "AccNum": {
+            "$ref": "#/components/schemas/T_AccountNumber"
+          },
+          "IBAN": {
+            "$ref": "#/components/schemas/T_IBAN"
+          },
+          "LiabType": {
+            "$ref": "#/components/schemas/T_AnyType"
+          },
+          "LiabCur": {
+            "$ref": "#/components/schemas/T_AccCur"
+          },
+          "LiabInstsNum": {
+            "maxLength": 5,
+            "minLength": 1,
+            "pattern": "[0-9]+",
+            "type": "string"
+          },
+          "InstRept": {
+            "type": "string"
+          },
+          "InstReptTms": {
+            "type": "integer",
+            "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+            "minimum": 1,
+            "exclusiveMinimum": true,
+            "maximum": 100,
+            "exclusiveMaximum": true
+          },
+          "InstAmt": {
+            "$ref": "#/components/schemas/T_BaseAmt"
+          },
+          "LstPymtDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "LiabDueDt": {
+            "$ref": "#/components/schemas/T_date"
+          },
+          "TotLiabAmt": {
+            "$ref": "#/components/schemas/T_Balance"
+          },
+          "RmngLiabAmt": {
+            "$ref": "#/components/schemas/T_Balance"
+          },
+          "PrdUsrsList": {
+            "$ref": "#/components/schemas/T_PrdUsrsList"
+          }
+        }
+      },
+      "T_Rqstr": {
+        "required": [
+          "PID",
+          "RID",
+          "Name",
+          "Pstn",
+          "RRN",
+          "GeoLoc"
+        ],
+        "type": "object",
+        "properties": {
+          "PID": {
+            "type": "string",
+            "maxLength": 5,
+            "minLength": 5,
+            "description": "LOV(Parnters) \nPartner Identity which initiate the request"
+          },
+          "RID": {
+            "maxLength": 20,
+            "minLength": 2,
+            "pattern": "[^!@#$%?*/^\\\\(){}+=_|\\[\\];<>\"'&]+",
+            "type": "string"
+          },
+          "Name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "Pstn": {
+            "maxLength": 50,
+            "minLength": 1,
+            "pattern": "[^!@#$%?*/^\\\\(){}+=_|\\[\\];<>\"'&]+",
+            "type": "string"
+          },
+          "RRN": {
+            "maxLength": 30,
+            "minLength": 2,
+            "pattern": "[^!@#$%?*/^\\\\(){}+=_|\\[\\];<>\"'&]+",
+            "type": "string"
+          },
+          "GeoLoc": {
+            "type": "string",
+            "maxLength": 18,
+            "minLength": 18,
+            "description": "format (rrccc-xxxxxxxxxxxx)\nrr: Region, ccc: City (GeoLocation document)\nx..x: Divisions within the requesting party\n\n\nThe Request initiator geo location and the internal division inside the entity which will be agreed upon on a requesting parties one-on-one basis"
+          },
+          "GeoLocDsc": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "[^!@#$%?*/^\\\\(){}+=_|\\[\\];<>\"'&]+",
+            "type": "string"
+          }
+        },
+        "description": "LOV (Parnters, Appindex)"
+      },
+      "T_RpInvPrtyChoice0": {
+        "title": "T_RpInvPrtyChoice0",
+        "type": "object",
+        "properties": {
+          "Indv": {
+            "$ref": "#/components/schemas/T_RpIndv"
+          }
+        }
+      },
+      "T_RpInvPrtyChoice1": {
+        "title": "T_RpInvPrtyChoice1",
+        "type": "object",
+        "properties": {
+          "Corp": {
+            "$ref": "#/components/schemas/T_RpCorp"
+          }
+        }
+      },
+      "T_RpInvPrtyChoice2": {
+        "title": "T_RpInvPrtyChoice2",
+        "type": "object",
+        "properties": {
+          "Gov": {
+            "$ref": "#/components/schemas/T_RpGov"
+          }
+        }
+      },
+      "T_RpInvPrtyChoice3": {
+        "title": "T_RpInvPrtyChoice3",
+        "type": "object",
+        "properties": {
+          "Chrty": {
+            "$ref": "#/components/schemas/T_RpChrty"
+          }
+        }
+      },
+      "T_RpInvPrtyChoice4": {
+        "title": "T_RpInvPrtyChoice4",
+        "type": "object",
+        "properties": {
+          "Chmbr": {
+            "$ref": "#/components/schemas/T_RpChmbr"
+          }
+        }
+      },
+      "T_RpIndv": {
+        "title": "T_RpIndv",
+        "required": [
+          "RpId",
+          "frstName",
+          "lstName"
+        ],
+        "type": "object",
+        "properties": {
+          "RpId": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice0"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice1"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice2"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice3"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice4"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice5"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice6"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice7"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice8"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice9"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice10"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice11"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice12"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice13"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice14"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice15"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice16"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice17"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice18"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpIndvIdChoice19"
+              }
+            ]
+          },
+          "frstName": {
+            "$ref": "#/components/schemas/T_Name"
+          },
+          "scndName": {
+            "$ref": "#/components/schemas/T_Name"
+          },
+          "thrdName": {
+            "$ref": "#/components/schemas/T_Name"
+          },
+          "lstName": {
+            "$ref": "#/components/schemas/T_Name"
+          },
+          "Ntnlty": {
+            "$ref": "#/components/schemas/T_NtnltyType"
+          }
+        }
+      },
+      "T_RpIndvIdChoice0": {
+        "title": "T_RpIndvIdChoice0",
+        "type": "object",
+        "properties": {
+          "ID_NID": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpIndvIdChoice1": {
+        "title": "T_RpIndvIdChoice1",
+        "type": "object",
+        "properties": {
+          "ID_KWT": {
+            "$ref": "#/components/schemas/T_ID_KWT"
+          }
+        }
+      },
+      "T_RpIndvIdChoice2": {
+        "title": "T_RpIndvIdChoice2",
+        "type": "object",
+        "properties": {
+          "ID_ARE": {
+            "$ref": "#/components/schemas/T_ID_ARE"
+          }
+        }
+      },
+      "T_RpIndvIdChoice3": {
+        "title": "T_RpIndvIdChoice3",
+        "type": "object",
+        "properties": {
+          "ID_QAT": {
+            "$ref": "#/components/schemas/T_ID_QAT"
+          }
+        }
+      },
+      "T_RpIndvIdChoice4": {
+        "title": "T_RpIndvIdChoice4",
+        "type": "object",
+        "properties": {
+          "ID_BHR": {
+            "$ref": "#/components/schemas/T_ID_BHR"
+          }
+        }
+      },
+      "T_RpIndvIdChoice5": {
+        "title": "T_RpIndvIdChoice5",
+        "type": "object",
+        "properties": {
+          "ID_OMN": {
+            "$ref": "#/components/schemas/T_ID_OMN"
+          }
+        }
+      },
+      "T_RpIndvIdChoice6": {
+        "title": "T_RpIndvIdChoice6",
+        "type": "object",
+        "properties": {
+          "ID_RID": {
+            "$ref": "#/components/schemas/T_ID_RID"
+          }
+        }
+      },
+      "T_RpIndvIdChoice7": {
+        "title": "T_RpIndvIdChoice7",
+        "type": "object",
+        "properties": {
+          "ID_SP": {
+            "$ref": "#/components/schemas/T_ID_SP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice8": {
+        "title": "T_RpIndvIdChoice8",
+        "type": "object",
+        "properties": {
+          "ID_DP": {
+            "$ref": "#/components/schemas/T_ID_DP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice9": {
+        "title": "T_RpIndvIdChoice9",
+        "type": "object",
+        "properties": {
+          "ID_GCCP": {
+            "$ref": "#/components/schemas/T_ID_SP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice10": {
+        "title": "T_RpIndvIdChoice10",
+        "type": "object",
+        "properties": {
+          "ID_PP": {
+            "$ref": "#/components/schemas/T_ID_SP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice11": {
+        "title": "T_RpIndvIdChoice11",
+        "type": "object",
+        "properties": {
+          "ID_FP": {
+            "$ref": "#/components/schemas/T_ID_SP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice12": {
+        "title": "T_RpIndvIdChoice12",
+        "type": "object",
+        "properties": {
+          "ID_HN": {
+            "$ref": "#/components/schemas/T_ID_DP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice13": {
+        "title": "T_RpIndvIdChoice13",
+        "type": "object",
+        "properties": {
+          "ID_FC": {
+            "$ref": "#/components/schemas/T_ID_DP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice14": {
+        "title": "T_RpIndvIdChoice14",
+        "type": "object",
+        "properties": {
+          "ID_VID": {
+            "$ref": "#/components/schemas/T_ID_VID"
+          }
+        }
+      },
+      "T_RpIndvIdChoice15": {
+        "title": "T_RpIndvIdChoice15",
+        "type": "object",
+        "properties": {
+          "ID_DC": {
+            "$ref": "#/components/schemas/T_ID_SP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice16": {
+        "title": "T_RpIndvIdChoice16",
+        "type": "object",
+        "properties": {
+          "ID_ERV": {
+            "$ref": "#/components/schemas/T_ID_ERV"
+          }
+        }
+      },
+      "T_RpIndvIdChoice17": {
+        "title": "T_RpIndvIdChoice17",
+        "type": "object",
+        "properties": {
+          "ID_FEV": {
+            "$ref": "#/components/schemas/T_ID_ERV"
+          }
+        }
+      },
+      "T_RpIndvIdChoice18": {
+        "title": "T_RpIndvIdChoice18",
+        "type": "object",
+        "properties": {
+          "ID_TWV": {
+            "$ref": "#/components/schemas/T_ID_DP"
+          }
+        }
+      },
+      "T_RpIndvIdChoice19": {
+        "title": "T_RpIndvIdChoice19",
+        "type": "object",
+        "properties": {
+          "ID_EV": {
+            "$ref": "#/components/schemas/T_ID_ERV"
+          }
+        }
+      },
+      "T_RpCorp": {
+        "title": "T_RpCorp",
+        "required": [
+          "RpId",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "RpId": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/T_RpCorpIdChoice0"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpCorpIdChoice1"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpCorpIdChoice2"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpCorpIdChoice3"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpCorpIdChoice4"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpCorpIdChoice5"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpCorpIdChoice6"
+              }
+            ]
+          },
+          "Name": {
+            "$ref": "#/components/schemas/T_FullName"
+          }
+        }
+      },
+      "T_RpCorpIdChoice0": {
+        "title": "T_RpCorpIdChoice0",
+        "type": "object",
+        "properties": {
+          "ID_CRN": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpCorpIdChoice1": {
+        "title": "T_RpCorpIdChoice1",
+        "type": "object",
+        "properties": {
+          "ID_WPL": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpCorpIdChoice2": {
+        "title": "T_RpCorpIdChoice2",
+        "type": "object",
+        "properties": {
+          "ID_EC": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpCorpIdChoice3": {
+        "title": "T_RpCorpIdChoice3",
+        "type": "object",
+        "properties": {
+          "ID_LOL": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpCorpIdChoice4": {
+        "title": "T_RpCorpIdChoice4",
+        "type": "object",
+        "properties": {
+          "ID_ML": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpCorpIdChoice5": {
+        "title": "T_RpCorpIdChoice5",
+        "type": "object",
+        "properties": {
+          "ID_PL": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpCorpIdChoice6": {
+        "title": "T_RpCorpIdChoice6",
+        "type": "object",
+        "properties": {
+          "ID_UIDN": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpGov": {
+        "title": "T_RpGov",
+        "required": [
+          "RpId",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "RpId": {
+            "$ref": "#/components/schemas/T_RpGovId"
+          },
+          "Name": {
+            "$ref": "#/components/schemas/T_FullName"
+          }
+        }
+      },
+      "T_RpChrty": {
+        "title": "T_RpChrty",
+        "required": [
+          "RpId",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "RpId": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/T_RpChrtyIdChoice0"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpChrtyIdChoice1"
+              },
+              {
+                "$ref": "#/components/schemas/T_RpChrtyIdChoice2"
+              }
+            ]
+          },
+          "Name": {
+            "$ref": "#/components/schemas/T_FullName"
+          }
+        }
+      },
+      "T_RpChrtyIdChoice0": {
+        "title": "T_RpChrtyIdChoice0",
+        "type": "object",
+        "properties": {
+          "ID_WPL": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpChrtyIdChoice1": {
+        "title": "T_RpChrtyIdChoice1",
+        "type": "object",
+        "properties": {
+          "ID_ML": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpChrtyIdChoice2": {
+        "title": "T_RpChrtyIdChoice2",
+        "type": "object",
+        "properties": {
+          "ID_PL": {
+            "$ref": "#/components/schemas/T_ID_NID"
+          }
+        }
+      },
+      "T_RpChmbr": {
+        "title": "T_RpChrty",
+        "required": [
+          "RpId",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "RpId": {
+            "$ref": "#/components/schemas/T_RpChmbrId"
+          },
+          "Name": {
+            "$ref": "#/components/schemas/T_FullName"
+          }
+        }
+      },
+      "T_RpChmbrId": {
+        "$ref": "#/components/schemas/T_ID_DP"
+      },
+      "T_RpGovId": {
+        "$ref": "#/components/schemas/T_ID_LOL"
+      },
+      "T_Name": {
+        "maxLength": 25,
+        "minLength": 5,
+        "type": "string"
+      },
+      "T_NtnltyType": {
+        "maxLength": 3,
+        "minLength": 3,
+        "type": "string",
+        "description": "LOV (Nationalities, Appindex)"
+      },
+      "T_ThrdPrty": {
+        "required": [
+          "Id",
+          "IdType",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "$ref": "#/components/schemas/T_Id"
+          },
+          "IdType": {
+            "$ref": "#/components/schemas/T_IdTypeIndividual"
+          },
+          "Name": {
+            "$ref": "#/components/schemas/T_FullName"
+          }
+        }
+      },
+      "T_AccQry": {
+        "required": [
+          "AccNum",
+          "IBAN"
+        ],
+        "type": "object",
+        "properties": {
+          "AccNum": {
+            "$ref": "#/components/schemas/T_AccountNumber"
+          },
+          "IBAN": {
+            "$ref": "#/components/schemas/T_Flag"
+          }
+        }
+      },
+      "T_FinInst": {
+        "type": "object",
+        "properties": {
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          }
+        }
+      },
+      "T_FIList": {
+        "type": "array",
+        "properties": {
+          "FICode": {
+            "$ref": "#/components/schemas/T_FICode"
+          }
+        },
+        "items": {
+          "$ref": "#/components/schemas/T_FICode"
+        }
+      },
+      "T_FIGroupCode": {
+        "type": "string",
+        "items": {
+          "maxLength": 3,
+          "minLength": 3,
+          "type": "string"
+        },
+        "description": "T_FIGroupCode"
+      },
+      "T_IdTypeIndividual": {
+        "type": "string",
+        "items": {
+          "maxLength": 10,
+          "minLength": 2,
+          "type": "string"
+        },
+        "description": "T_IdTypeIndividual"
+      },
+      "T_ID_NID": {
+        "type": "string",
+        "items": {
+          "maxLength": 10,
+          "minLength": 10,
+          "pattern": "[1][0-9]+",
+          "type": "string"
+        },
+        "description": "ID_NID"
+      },
+      "T_ID_KWT": {
+        "type": "string",
+        "items": {
+          "maxLength": 12,
+          "minLength": 12,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_KWT"
+      },
+      "T_ID_ARE": {
+        "type": "string",
+        "items": {
+          "maxLength": 15,
+          "minLength": 15,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_ARE"
+      },
+      "T_ID_QAT": {
+        "type": "string",
+        "items": {
+          "maxLength": 11,
+          "minLength": 11,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_QAT"
+      },
+      "T_ID_BHR": {
+        "type": "string",
+        "items": {
+          "maxLength": 9,
+          "minLength": 9,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_BHR"
+      },
+      "T_ID_OMN": {
+        "type": "string",
+        "items": {
+          "maxLength": 8,
+          "minLength": 8,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_BHR"
+      },
+      "T_ID_RID": {
+        "type": "string",
+        "items": {
+          "maxLength": 10,
+          "minLength": 10,
+          "pattern": "[2][0-9]+",
+          "type": "string"
+        },
+        "description": "ID_RID"
+      },
+      "T_ID_SP": {
+        "type": "string",
+        "items": {
+          "maxLength": 4,
+          "minLength": 20,
+          "pattern": "[A-Za-z0-9]+",
+          "type": "string"
+        },
+        "description": "ID_SP"
+      },
+      "T_ID_DP": {
+        "type": "string",
+        "items": {
+          "maxLength": 4,
+          "minLength": 20,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_SP"
+      },
+      "T_ID_VID": {
+        "type": "string",
+        "items": {
+          "maxLength": 10,
+          "minLength": 10,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_VID"
+      },
+      "T_ID_ERV": {
+        "type": "string",
+        "items": {
+          "maxLength": 4,
+          "minLength": 12,
+          "pattern": "[0-9]+",
+          "type": "string"
+        },
+        "description": "ID_ERV"
+      },
+      "T_FICode": {
+        "type": "string",
+        "items": {
+          "maxLength": 5,
+          "minLength": 5,
+          "type": "string"
+        },
+        "description": "LOV (FI's, Appindex)",
+        "maxLength": 5,
+        "minLength": 5
+      },
+      "T_FIRsStatus": {
+        "$ref": "#/components/schemas/T_StatusCode"
+      },
+      "T_AccountNumber": {
+        "maxLength": 24,
+        "minLength": 4,
+        "pattern": "[A-Za-z0-9 ]+",
+        "type": "string"
+      },
+      "T_DepotStatus": {
+        "maxLength": 20,
+        "minLength": 1,
+        "pattern": "[^!@#$%?*/^\\\\(){}+=_|\\[\\];<>\"'&]+",
+        "type": "string"
+      },
+      "T_date": {
+        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+        "type": "string"
+      },
+      "T_NSPC_EN_Text": {
+        "maxLength": 24,
+        "minLength": 4,
+        "pattern": "[A-Za-z0-9 ]+",
+        "type": "string"
+      },
+      "T_IBAN": {
+        "maxLength": 24,
+        "pattern": "SA[0-9]{4}[A-Za-z0-9]{18}",
+        "type": "string",
+        "description": "SA[0-9]{4}[A-Za-z0-9]{18}"
+      },
+      "T_Balance": {
+        "type": "integer",
+        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+        "minimum": -999999999999999,
+        "exclusiveMinimum": true,
+        "maximum": 999999999999999,
+        "exclusiveMaximum": true
+      },
+      "T_BaseAmt": {
+        "type": "integer",
+        "pattern": "[0-9.]{1,15}",
+        "minimum": 0,
+        "exclusiveMinimum": true,
+        "maximum": 999999999999999,
+        "exclusiveMaximum": true
+      },
+      "T_AccCur": {
+        "pattern": "[A-Z]{3}",
+        "type": "string"
+      },
+      "T_AccStatus": {
+        "type": "string",
+        "description": "(01:Active , 02:Inactive, 03:Closed, 04:Blocked, 05:Dormant,06:Freezed For Update ,07: Unclaimed)"
+      },
+      "T_Flag": {
+        "maxLength": 1,
+        "minLength": 1,
+        "pattern": "[yn]{1}",
+        "type": "string"
+      },
+      "T_AnyType": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "T_NSPC": {
+        "pattern": "[^!@#$%?*/^\\\\(){}+=_|\\[\\];<>\"'&]+",
+        "type": "string"
+      },
+      "T_NSPC_Text": {
+        "pattern": "[A-Za-z0-9ا-ي ]+",
+        "type": "string"
+      },
+      "T_PrdctUserIdType": {
+        "maxLength": 10,
+        "minLength": 2,
+        "type": "string",
+        "description": "LOV(Id Types)\nType of FI product  user identifier"
+      },
+      "T_FullName": {
+        "maxLength": 100,
+        "minLength": 2,
+        "type": "string"
+      },
+      "T_Id": {
+        "maxLength": 20,
+        "minLength": 4,
+        "type": "string"
+      },
+      "T_ID_LOL": {
+        "maxLength": 20,
+        "minLength": 4,
+        "pattern": "[0-9ا-ي ]+",
+        "type": "string"
+      },
+      "T_AnyName": {
+        "type": "string"
+      },
+      "T_PID": {
+        "maxLength": 5,
+        "minLength": 5,
+        "type": "string",
+        "description": "Partener ID"
+      },
+      "T_Sys": {
+        "type": "string"
+      },
+      "T_MsgDtTm": {
+        "maxLength": 19,
+        "minLength": 19,
+        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2}(\\.[0-9]{6})?((-|\\+)[0-9]{2}:[0-9]{2})?)?)?",
+        "type": "string",
+        "description": "Time when the Message is initiated from the source (Request message creation time)"
+      },
+      "T_ChID": {
+        "type": "string",
+        "description": "(B2B, Portal...etc)"
+      },
+      "T_CRN": {
+        "maxLength": 50,
+        "minLength": 5,
+        "type": "string"
+      },
+      "T_SRN": {
+        "type": "string",
+        "maxLength": 50,
+        "minLength": 5
+      },
+      "T_Cnfd": {
+        "type": "string",
+        "maxLength": 2,
+        "minLength": 1
+      },
+      "T_Mod": {
+        "type": "string",
+        "maxLength": 2,
+        "minLength": 1
+      },
+      "T_Clsf": {
+        "type": "string",
+        "maxLength": 2,
+        "minLength": 1
+      },
+      "T_pHash": {
+        "type": "string",
+        "maxLength": 128,
+        "minLength": 0
+      },
+      "T_IPAdrs": {
+        "type": "string",
+        "minLength": 0,
+        "pattern": "[0-9]{3}.[0-9]{3}.[0-9]{1,3}.[0-9]{1,3}"
+      },
+      "T_StatusCode": {
+        "pattern": "[SE][0-9]{7}",
+        "type": "string"
+      },
+      "T_Note": {
+        "type": "string",
+        "maxLength": 250,
+        "minLength": 10
+      },
+      "T_Info": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/T_Attributes"
+        }
+      },
+      "T_Attributes": {
+        "title": "T_Attributes",
+        "required": [
+          "Attribute"
+        ],
+        "type": "object",
+        "properties": {
+          "Attribute": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T_Attribute"
+            }
+          }
+        }
+      },
+      "T_Attribute": {
+        "title": "T_Attribute",
+        "required": [
+          "Name",
+          "Value"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          },
+          "Value": {
+            "maxLength": 100,
+            "minLength": 2,
+            "type": "string"
+          }
+        }
+      },
+      "T_PrdUsrsList": {
+        "title": "T_PrdUsrsLis",
+        "required": [
+          "UsrInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "UsrInfo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T_UsrInfo"
+            }
+          }
+        }
+      },
+      "T_UsrInfo": {
+        "type": "object",
+        "title": "UsrInfo",
+        "required": [
+          "Id",
+          "IdType",
+          "Name",
+          "UsrType"
+        ],
+        "properties": {
+          "Id": {
+            "$ref": "#/components/schemas/T_Id"
+          },
+          "IdType": {
+            "$ref": "#/components/schemas/T_PrdctUserIdType"
+          },
+          "Name": {
+            "$ref": "#/components/schemas/T_FullName"
+          },
+          "UsrType": {
+            "type": "string",
+            "description": "(01:Owner , 02:Authorized)\nInformation if a user is FI product  owner or authorized user"
+          }
+        }
+      },
+      "T_RsrvList": {
+        "title": "T_RsrvList",
+        "required": [
+          "RsrvInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "RsrvInfo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T_RsrvInfo"
+            }
+          }
+        }
+      },
+      "T_RsrvInfo": {
+        "type": "object",
+        "title": "RsrvInfo",
+        "required": [
+          "RsrvAmt",
+          "RsrvBy",
+          "RRN"
+        ],
+        "properties": {
+          "RsrvAmt": {
+            "$ref": "#/components/schemas/T_Balance"
+          },
+          "Cur": {
+            "$ref": "#/components/schemas/T_AccCur"
+          },
+          "RsrvBy": {
+            "$ref": "#/components/schemas/T_FullName"
+          },
+          "RRN": {
+            "maxLength": 30,
+            "minLength": 2,
+            "type": "string"
+          }
+        }
+      }
+    }
   }
 }
